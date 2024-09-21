@@ -1,3 +1,4 @@
+# vim:tabstop=4:softtabstop=4:shiftwidth=4
 [project]
 name = "playground-uv"
 version = "0.1.0"
