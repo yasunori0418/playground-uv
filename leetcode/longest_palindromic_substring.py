@@ -2,6 +2,11 @@ from deepdiff import DeepDiff
 
 
 class Solution:
+    """
+    Given a string s, return the longest palindromic substring in s.
+    文字列 s が与えられると、 s 内の最長の回文部分文字列を返します。
+    """
+
     def longestPalindrome(self, s: str) -> str:
         pass
 
