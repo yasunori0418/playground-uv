@@ -1,7 +1,10 @@
+# vim:tabstop=4:softtabstop=4:shiftwidth=4
 [project]
 name = "playground-uv"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "deepdiff>=8.0.1",
+]
