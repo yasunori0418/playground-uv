@@ -8,7 +8,26 @@ class Solution:
     """
 
     def longestPalindrome(self, s: str) -> str:
-        pass
+        if len(s) <= 1:
+            return s
+        buf = []
+        for temp in allPatterns(s):
+            if condition(temp):
+                buf.append(temp)
+        max = 0
+        result = ""
+        for b in buf:
+            if max < len(b):
+                max = len(b)
+                result = b
+        return result
+
+
+def condition(s: str) -> bool:
+    if s == s[::-1]:
+        return True
+    else:
+        return False
 
 
 def allPatterns(s):
@@ -54,3 +73,5 @@ assert not DeepDiff(
     ],
     ignore_order=True,
 )
+assert not condition("abc")
+assert condition("aba")
