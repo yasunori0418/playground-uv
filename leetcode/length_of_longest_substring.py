@@ -32,6 +32,9 @@ def allPatterns(arg: str) -> Iterator[str]:
             yield arg[i : j + 1]
 
 
+#############################################################################
+
+
 def lengthOfLongestSubstring(s: str) -> int:
     """`Time Limit Exceeded`が発生して、答えを探してきて見付けたやつ"""
     seen = {}
