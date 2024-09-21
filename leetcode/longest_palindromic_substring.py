@@ -38,3 +38,19 @@ assert not DeepDiff(
     ],
     ignore_order=True,
 )
+assert not DeepDiff(
+    list(allPatterns("cbbd")),
+    [
+        "c",
+        "b",
+        "b",
+        "d",
+        "cb",
+        "bb",
+        "bd",
+        "cbb",
+        "bbd",
+        "cbbd",
+    ],
+    ignore_order=True,
+)
