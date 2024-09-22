@@ -31,6 +31,7 @@ class Solution:
     def myAtoi(self, s: str) -> int:
         if len(s) == 0:
             return 0
+        return int(s)
 
 
 assert Solution().myAtoi("") == 0
