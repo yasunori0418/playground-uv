@@ -1,3 +1,6 @@
+import re
+
+
 class Solution:
     """10. Regular Expression Matching
     Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
@@ -16,7 +19,7 @@ class Solution:
     """
 
     def isMatch(self, s: str, p: str) -> bool:
-        pass
+        return bool(re.match(f"^{p}$", s))
 
 
 assert not Solution().isMatch("aa", "a")
