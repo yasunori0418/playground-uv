@@ -45,40 +45,27 @@ class Solution:
                 ans += "M" * int(i)
 
             if num_len == 3:
-                if int(i) <= 3:
-                    ans += "C" * int(i)
-                if int(i) >= 4:
-                    if int(i) == 4:
-                        ans += "CD"
-                    elif int(i) == 9:
-                        ans += "CM"
-                    else:
-                        ans += f"D{'C' * (int(i) - 5)}"
+                ans += convert(int(i), "D", "C", "M")
 
             if num_len == 2:
-                if int(i) <= 3:
-                    ans += "X" * int(i)
-                if int(i) >= 4:
-                    if int(i) == 4:
-                        ans += "XL"
-                    elif int(i) == 9:
-                        ans += "XC"
-                    else:
-                        ans += f"L{'X' * (int(i) - 5)}"
+                ans += convert(int(i), "L", "X", "C")
 
             if num_len == 1:
-                if int(i) <= 3:
-                    ans += "I" * int(i)
-                if int(i) >= 4:
-                    if int(i) == 4:
-                        ans += "IV"
-                    elif int(i) == 9:
-                        ans += "IX"
-                    else:
-                        ans += f"V{'I' * (int(i) - 5)}"
+                ans += convert(int(i), "V", "I", "X")
 
             num_len -= 1
         return ans
+
+
+def convert(i: int, five: str, one: str, next: str) -> str:
+    if int(i) <= 3:
+        return one * int(i)
+    if int(i) == 4:
+        return f"{one}{five}"
+    elif int(i) == 9:
+        return f"{one}{next}"
+    else:
+        return f"{five}{one * (int(i) - 5)}"
 
 
 assert Solution().intToRoman(3749) == "MMMDCCXLIX"
