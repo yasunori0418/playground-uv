@@ -29,13 +29,37 @@ class Solution:
     """
 
     def myAtoi(self, s: str) -> int:
+        s = s.strip()
+        buf = ""
+        is_minus = False
+        min_num = -(2**31)
+        max_num = 2**31 - 1
         if len(s) == 0:
             return 0
-        return int(s)
+        if s[0] == "-":
+            s = s[1:]
+            is_minus = True
+        elif s[0] == "+":
+            s = s[1:]
+        for i in s:
+            if not i.isdigit():
+                break
+            buf += i
+        if len(buf) == 0:
+            return 0
+        if is_minus:
+            buf = f"-{buf}"
+
+        if int(buf) <= min_num:
+            return min_num
+        if int(buf) >= max_num:
+            return max_num
+        return int(buf)
 
 
 assert Solution().myAtoi("") == 0
 assert Solution().myAtoi("42") == 42
+assert Solution().myAtoi(" +042") == 42
 assert Solution().myAtoi(" -042") == -42
 assert Solution().myAtoi("1337c0d3") == 1337
 assert Solution().myAtoi("0-1") == 0
