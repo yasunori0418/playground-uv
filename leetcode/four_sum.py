@@ -3,6 +3,31 @@ import pytest
 import itertools
 
 
+def all_patterns2(nums: List[int], target: int) -> Iterator[List[int]]:
+    nums.sort()
+    nl = len(nums)
+    for one in range(nl - 3):
+        if sum([nums[one], nums[one + 1], nums[one + 2], nums[one + 3]]) > target:
+            break
+        if one > 0 and nums[one] == nums[one - 1]:
+            continue
+        if sum([nums[one], nums[nl - 1], nums[nl - 2], nums[nl - 3]]) < target:
+            continue
+
+        for two in range(one + 1, nl - 2):
+            if sum([nums[one], nums[two], nums[two + 1], nums[two + 2]]) > target:
+                break
+            if sum([nums[one], nums[two], nums[nl - 1], nums[nl - 1]]) < target:
+                continue
+            if two > one + 1 and nums[two] == nums[two - 1]:
+                continue
+
+            left = two + 1
+            right = nl - 1
+            while True:
+                yield [nums[one], nums[two], nums[left], nums[right]]
+
+
 def all_patterns(nums: List[int]) -> Iterator[List[int]]:
     nums.sort()
     for one in range(len(nums) - 3):
@@ -182,6 +207,65 @@ class Solution:
                 ans.append(n)
         return ans
 
+    def fourSum2(self, nums: List[int], target: int) -> List[List[int]]:
+        """timelimitには勝てなかった
+        :refer: https://leetcode.com/problems/4sum/solutions/5822917/optimal-solution-for-4sum-problem-using-two-pointer-technique-and-early-exits/
+        """
+        nums.sort()  # Sort the array first
+        n = len(nums)
+        result = []
+
+        # Iterate over the first two numbers
+        for i in range(n - 3):
+            # Early exit if the smallest sum exceeds the target
+            if nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target:
+                break
+
+            # Skip duplicates for the first number
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+
+            # Early exit if the largest possible sum is less than the target
+            if nums[i] + nums[n - 1] + nums[n - 2] + nums[n - 3] < target:
+                continue
+
+            for j in range(i + 1, n - 2):
+                # Skip duplicates for the second number
+                if j > i + 1 and nums[j] == nums[j - 1]:
+                    continue
+
+                # Early exit for the second number
+                if nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target:
+                    break
+
+                if nums[i] + nums[j] + nums[n - 1] + nums[n - 2] < target:
+                    continue
+
+                # Now use two pointers for the remaining two numbers
+                left, right = j + 1, n - 1
+                while left < right:
+                    total = nums[i] + nums[j] + nums[left] + nums[right]
+
+                    if total == target:
+                        result.append([nums[i], nums[j], nums[left], nums[right]])
+                        left += 1
+                        right -= 1
+
+                        # Skip duplicates for the third number
+                        while left < right and nums[left] == nums[left - 1]:
+                            left += 1
+
+                        # Skip duplicates for the fourth number
+                        while left < right and nums[right] == nums[right + 1]:
+                            right -= 1
+
+                    elif total < target:
+                        left += 1
+                    else:
+                        right -= 1
+
+        return result
+
 
 @pytest.mark.parametrize(
     [
@@ -196,7 +280,71 @@ class Solution:
         pytest.param([2, 2, 2, 2, 2], 8, [[2, 2, 2, 2]]),
         pytest.param([1, 2, 3, 4, 5, 6, 7, 8], 12, [[1, 2, 3, 6], [1, 2, 4, 5]]),
         pytest.param(
-            [ -444, -400, -398, -387, -372, -347, -340, -337, -330, -326, -326, -308, -304, -295, -270, -228, -224, -213, -196, -192, -186, -118, -103, -92, -89, -42, -31, -28, -20, -19, -8, 1, 1, 9, 48, 49, 74, 88, 90, 135, 152, 160, 170, 181, 181, 202, 238, 254, 271, 272, 274, 285, 287, 302, 314, 319, 342, 373, 373, 392, 400, 453, 482, ],
+            [
+                -444,
+                -400,
+                -398,
+                -387,
+                -372,
+                -347,
+                -340,
+                -337,
+                -330,
+                -326,
+                -326,
+                -308,
+                -304,
+                -295,
+                -270,
+                -228,
+                -224,
+                -213,
+                -196,
+                -192,
+                -186,
+                -118,
+                -103,
+                -92,
+                -89,
+                -42,
+                -31,
+                -28,
+                -20,
+                -19,
+                -8,
+                1,
+                1,
+                9,
+                48,
+                49,
+                74,
+                88,
+                90,
+                135,
+                152,
+                160,
+                170,
+                181,
+                181,
+                202,
+                238,
+                254,
+                271,
+                272,
+                274,
+                285,
+                287,
+                302,
+                314,
+                319,
+                342,
+                373,
+                373,
+                392,
+                400,
+                453,
+                482,
+            ],
             -4402,
             [],
         ),
