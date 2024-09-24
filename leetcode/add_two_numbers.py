@@ -1,4 +1,5 @@
-from typing import Optional
+from typing import List, Optional
+import pytest
 
 
 # Definition for singly-linked list.
@@ -6,6 +7,19 @@ class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
+
+    def __str__(self):
+        return f"val: {self.val}\nnext: {self.next}"
+
+
+def gen_list_node(nums: List[int]) -> ListNode:
+    node = ListNode(nums[0])
+    current = node
+    for n in nums[1:]:
+        new_node = ListNode(n)
+        current.next = new_node
+        current = new_node
+    return node
 
 
 class Solution:
@@ -71,3 +85,29 @@ class Solution:
 #
 # Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
 # Output: [8,9,9,9,0,0,0,1]
+
+
+@pytest.mark.parametrize(
+    ["input1", "input2", "expected_data"],
+    [
+        pytest.param(
+            gen_list_node([2, 4, 3]), gen_list_node([5, 6, 4]), gen_list_node([7, 0, 8])
+        ),
+        pytest.param(gen_list_node([0]), gen_list_node([0]), gen_list_node([0])),
+        pytest.param(
+            gen_list_node([9, 9, 9, 9, 9, 9, 9]),
+            gen_list_node([9, 9, 9, 9]),
+            gen_list_node([8, 9, 9, 9, 0, 0, 0, 1]),
+        ),
+    ],
+)
+def test_add_two_numbers_first(
+    input1: ListNode, input2: ListNode, expected_data: ListNode
+):
+    res = Solution().addTwoNumbersFirst(input1, input2)
+    while res or expected_data:
+        if not res or not expected_data:
+            assert False
+        assert res.val == expected_data.val
+        res = res.next
+        expected_data = expected_data.next
