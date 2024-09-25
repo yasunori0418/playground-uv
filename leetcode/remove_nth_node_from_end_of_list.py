@@ -1,5 +1,5 @@
 import pytest
-from typing import Optional, List, Tuple
+from typing import Optional, List
 
 
 # Definition for singly-linked list.
@@ -36,7 +36,7 @@ assert node2list(gen_list_node([1])) == [1]
 assert node2list(gen_list_node([1, 2])) == [1, 2]
 
 
-def target_node(head: ListNode, n: int):
+def target_node(head: Optional[ListNode], n: int):
     listed_node = node2list(head)
     until_cnt = len(listed_node) - n
     prev_point = None
@@ -82,8 +82,39 @@ class Solution:
     連結リストの先頭を指定すると、リストの末尾から`n`番目のノードを削除し、その先頭を返します。
     """
 
+    def myRemoveNthFromEnd(
+        self, head: Optional[ListNode], n: int
+    ) -> Optional[ListNode]:
+        pointer = head
+        listed_node = node2list(pointer)
+        if len(listed_node) == 1 and n == 1:
+            return head.next
+        prev_pointer, remove_pointer = target_node(pointer, n)
+        if prev_pointer:
+            if remove_pointer.next:
+                prev_pointer.next = remove_pointer.next
+            else:
+                prev_pointer.next = None
+        else:
+            head.next = None
+        return head
+
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        pass
+        """また難しく考えすぎて、敗北した…"""
+        fast = head
+        slow = head
+        for i in range(n):
+            fast = fast.next
+
+        if not fast:
+            return head.next
+
+        while fast.next:
+            fast = fast.next
+            slow = slow.next
+
+        slow.next = slow.next.next
+        return head
 
 
 @pytest.mark.parametrize(
@@ -99,4 +130,5 @@ class Solution:
     ],
 )
 def test_remove_nth_from_end(head: ListNode, n: int, expected: List[int]):
-    assert node2list(Solution().removeNthFromEnd(head, n)) == expected
+    res = node2list(Solution().removeNthFromEnd(head, n))
+    assert res == expected
