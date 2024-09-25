@@ -22,16 +22,6 @@ def gen_list_node(nums: List[int]) -> ListNode:
     return node
 
 
-class Solution:
-    """19. Remove Nth Node From End of List
-    Given the head of a linked list, remove the nth node from the end of the list and return its head.
-    連結リストの先頭を指定すると、リストの末尾から`n`番目のノードを削除し、その先頭を返します。
-    """
-
-    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        pass
-
-
 def node2list(head: Optional[ListNode]) -> List[int]:
     result = []
     pointer = head
@@ -60,6 +50,16 @@ def target_node(head: ListNode, n: int) -> ListNode:
 assert target_node(gen_list_node([1, 2, 3, 4, 5]), 2).val == 4
 assert target_node(gen_list_node([1]), 1).val == 1
 assert target_node(gen_list_node([1, 2]), 1).val == 1
+
+
+class Solution:
+    """19. Remove Nth Node From End of List
+    Given the head of a linked list, remove the nth node from the end of the list and return its head.
+    連結リストの先頭を指定すると、リストの末尾から`n`番目のノードを削除し、その先頭を返します。
+    """
+
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        pass
 
 
 @pytest.mark.parametrize(
