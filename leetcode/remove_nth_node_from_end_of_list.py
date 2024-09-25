@@ -8,6 +8,9 @@ class ListNode:
         self.val = val
         self.next = next
 
+    def __str__(self) -> str:
+        return f"val: {self.val}\nnext: {self.next}"
+
 
 def gen_list_node(nums: List[int]) -> ListNode:
     node = ListNode(nums[0])
@@ -24,8 +27,20 @@ class Solution:
     Given the head of a linked list, remove the nth node from the end of the list and return its head.
     連結リストの先頭を指定すると、リストの末尾から`n`番目のノードを削除し、その先頭を返します。
     """
+
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
         pass
+
+
+def node2list(head: Optional[ListNode], result: List[int] = []) -> List[int]:
+    if not head:
+        return result
+    result.append(head.val)
+    next_node = head.next
+    return node2list(next_node, result)
+
+
+assert node2list(gen_list_node([1, 2, 3, 4, 5])) == [1, 2, 3, 4, 5]
 
 
 @pytest.mark.parametrize(
@@ -36,7 +51,7 @@ class Solution:
     ],
     [
         pytest.param(gen_list_node([1, 2, 3, 4, 5]), 2, gen_list_node([1, 2, 3, 5])),
-        pytest.param(gen_list_node([1]), 1, gen_list_node([])),
+        pytest.param(gen_list_node([1]), 1, ListNode()),
         pytest.param(gen_list_node([1, 2]), 1, gen_list_node([1])),
     ],
 )
