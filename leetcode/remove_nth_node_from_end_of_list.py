@@ -32,15 +32,31 @@ class Solution:
         pass
 
 
-def node2list(head: Optional[ListNode], result: List[int] = []) -> List[int]:
-    if not head:
-        return result
-    result.append(head.val)
-    next_node = head.next
-    return node2list(next_node, result)
+def node2list(head: Optional[ListNode]) -> List[int]:
+    result = []
+    pointer = head
+    while pointer:
+        result.append(pointer.val)
+        pointer = pointer.next
+    return result
 
 
 assert node2list(gen_list_node([1, 2, 3, 4, 5])) == [1, 2, 3, 4, 5]
+
+
+def target_node(head: ListNode, n: int) -> ListNode:
+    pointer = head
+    listed_node = node2list(pointer)
+    if len(listed_node) == 1:
+        return pointer
+    until_cnt = len(listed_node) - n
+    for _ in range(until_cnt):
+        pointer = pointer.next
+    return pointer
+
+
+assert target_node(gen_list_node([1, 2, 3, 4, 5]), 2).val == 4
+assert target_node(gen_list_node([1]), 1).val == 1
 
 
 @pytest.mark.parametrize(
