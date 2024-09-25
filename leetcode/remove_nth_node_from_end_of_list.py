@@ -1,5 +1,5 @@
 import pytest
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 
 # Definition for singly-linked list.
@@ -36,20 +36,44 @@ assert node2list(gen_list_node([1])) == [1]
 assert node2list(gen_list_node([1, 2])) == [1, 2]
 
 
-def target_node(head: ListNode, n: int) -> ListNode:
-    pointer = head
-    listed_node = node2list(pointer)
+def target_node(head: ListNode, n: int):
+    listed_node = node2list(head)
     until_cnt = len(listed_node) - n
+    prev_point = None
     if len(listed_node) == 1 or until_cnt == 1:
-        return pointer
-    for _ in range(until_cnt):
-        pointer = pointer.next
-    return pointer
+        return prev_point, head
+    for i in range(until_cnt):
+        head = head.next
+        if i == until_cnt - 2:
+            prev_point = head
+    return prev_point, head
 
 
-assert target_node(gen_list_node([1, 2, 3, 4, 5]), 2).val == 4
-assert target_node(gen_list_node([1]), 1).val == 1
-assert target_node(gen_list_node([1, 2]), 1).val == 1
+@pytest.mark.parametrize(
+    [
+        "head",
+        "n",
+        "expected_prev_point",
+        "expected_remove_point",
+    ],
+    [
+        pytest.param(gen_list_node([1, 2, 3, 4, 5]), 2, 3, 4),
+        pytest.param(gen_list_node([1]), 1, None, 1),
+        pytest.param(gen_list_node([1, 2]), 1, None, 1),
+    ],
+)
+def test_target_node(
+    head: ListNode,
+    n: int,
+    expected_prev_point: Optional[int],
+    expected_remove_point: int,
+):
+    prev_pointer, remove_pointer = target_node(head, n)
+    assert remove_pointer.val == expected_remove_point
+    if prev_pointer:
+        assert prev_pointer.val == expected_prev_point
+    else:
+        assert prev_pointer == expected_prev_point
 
 
 class Solution:
