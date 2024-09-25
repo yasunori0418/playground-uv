@@ -69,16 +69,10 @@ assert target_node(gen_list_node([1, 2]), 1).val == 1
         "expected",
     ],
     [
-        pytest.param(gen_list_node([1, 2, 3, 4, 5]), 2, gen_list_node([1, 2, 3, 5])),
-        pytest.param(gen_list_node([1]), 1, ListNode()),
-        pytest.param(gen_list_node([1, 2]), 1, gen_list_node([1])),
+        pytest.param(gen_list_node([1, 2, 3, 4, 5]), 2, [1, 2, 3, 5]),
+        pytest.param(gen_list_node([1]), 1, []),
+        pytest.param(gen_list_node([1, 2]), 1, [1]),
     ],
 )
-def test_remove_nth_from_end(head: ListNode, n: int, expected: ListNode):
-    res = Solution().removeNthFromEnd(head, n)
-    while res or expected:
-        if not res or not expected:
-            assert False
-        assert res.val == expected.val
-        res = res.next
-        expected = expected.next
+def test_remove_nth_from_end(head: ListNode, n: int, expected: List[int]):
+    assert node2list(Solution().removeNthFromEnd(head, n)) == expected
