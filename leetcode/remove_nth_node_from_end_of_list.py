@@ -47,9 +47,9 @@ assert node2list(gen_list_node([1, 2, 3, 4, 5])) == [1, 2, 3, 4, 5]
 def target_node(head: ListNode, n: int) -> ListNode:
     pointer = head
     listed_node = node2list(pointer)
-    if len(listed_node) == 1:
-        return pointer
     until_cnt = len(listed_node) - n
+    if len(listed_node) == 1 or until_cnt == 1:
+        return pointer
     for _ in range(until_cnt):
         pointer = pointer.next
     return pointer
@@ -57,7 +57,7 @@ def target_node(head: ListNode, n: int) -> ListNode:
 
 assert target_node(gen_list_node([1, 2, 3, 4, 5]), 2).val == 4
 assert target_node(gen_list_node([1]), 1).val == 1
-
+assert target_node(gen_list_node([1, 2]), 1).val == 1
 
 @pytest.mark.parametrize(
     [
