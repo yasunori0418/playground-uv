@@ -42,6 +42,8 @@ def node2list(head: Optional[ListNode]) -> List[int]:
 
 
 assert node2list(gen_list_node([1, 2, 3, 4, 5])) == [1, 2, 3, 4, 5]
+assert node2list(gen_list_node([1])) == [1]
+assert node2list(gen_list_node([1, 2])) == [1, 2]
 
 
 def target_node(head: ListNode, n: int) -> ListNode:
@@ -58,6 +60,7 @@ def target_node(head: ListNode, n: int) -> ListNode:
 assert target_node(gen_list_node([1, 2, 3, 4, 5]), 2).val == 4
 assert target_node(gen_list_node([1]), 1).val == 1
 assert target_node(gen_list_node([1, 2]), 1).val == 1
+
 
 @pytest.mark.parametrize(
     [
