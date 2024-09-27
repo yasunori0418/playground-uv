@@ -21,9 +21,6 @@ import pytest
 class PostValue:
     PREFIX_TYPES = Literal["Array", "String", "Integer"]
 
-    def __init__(self, value: str) -> None:
-        self.value = value
-
     def _extract_parent_data(self, data: str) -> str:
         """dataから括弧の中の文字列を抽出する
 
@@ -53,9 +50,9 @@ class PostValue:
 
         prefix = self._prefix_checker(data)
         if prefix == "String":
-            return __match_data(data, re.compile(r'^s:\d:"(.*?)";'))
+            return __match_data(data, re.compile(r'^s:\d:"(.*?)"'))
         elif prefix == "Integer":
-            return int(__match_data(data, re.compile(r"i:(\d*);")))
+            return int(__match_data(data, re.compile(r"i:(\d*)")))
         return None
 
     def parse2dict(self) -> dict:
