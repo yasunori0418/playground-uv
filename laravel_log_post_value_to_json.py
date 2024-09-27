@@ -13,7 +13,8 @@ prefix:
   i: 整数
 """
 
-from typing import Literal, Optional
+from typing import Any, Literal, Optional, Union
+import re
 import pytest
 
 
@@ -44,8 +45,36 @@ class PostValue:
         else:
             return None
 
+    def _extract_data(self, data: str) -> Union[str, int, None]:
+        def __match_data(data: str, pattern: re.Pattern):
+            match = pattern.match(data)
+            if match:
+                return match.group(1)
+
+        prefix = self._prefix_checker(data)
+        if prefix == "String":
+            return __match_data(data, re.compile(r'^s:\d:"(.*?)";'))
+        elif prefix == "Integer":
+            return int(__match_data(data, re.compile(r"i:(\d*);")))
+        return None
+
     def parse2dict(self) -> dict:
         return dict()
+
+
+@pytest.mark.parametrize(
+    [
+        "value",
+        "expected",
+    ],
+    [
+        pytest.param('i:0;s:5:"item1";i:1;"item2";i:2;"item3"', 0),
+        pytest.param('s:3:"key";s:5:"value";', "key"),
+        pytest.param('n:3:"key";s:5:"value";', None),
+    ],
+)
+def test_extract_data(value: str, expected: Any):
+    assert PostValue("test")._extract_data(value) == expected
 
 
 @pytest.mark.parametrize(
