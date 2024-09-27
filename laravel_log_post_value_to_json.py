@@ -74,7 +74,7 @@ class PostValue:
     ],
 )
 def test_extract_data(value: str, expected: Any):
-    assert PostValue("test")._extract_data(value) == expected
+    assert PostValue()._extract_data(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -93,7 +93,7 @@ def test_extract_data(value: str, expected: Any):
     ],
 )
 def test_prefix_checker(value: str, expected: str):
-    assert PostValue("test")._prefix_checker(value) == expected
+    assert PostValue()._prefix_checker(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -113,7 +113,7 @@ def test_prefix_checker(value: str, expected: str):
     ],
 )
 def test_extract_parent_data(value: str, expected: str):
-    assert PostValue("test")._extract_parent_data(value) == expected
+    assert PostValue()._extract_parent_data(value) == expected
 
 
 @pytest.mark.skip(reason="未実装")
@@ -137,4 +137,4 @@ def test_extract_parent_data(value: str, expected: str):
     ],
 )
 def test_parse2dict(value: str, expected: dict):
-    assert PostValue(value).parse2dict() == expected
+    assert PostValue().parse2dict() == expected
