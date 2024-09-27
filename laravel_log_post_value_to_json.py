@@ -55,7 +55,7 @@ class PostValue:
             return int(__match_data(data, re.compile(r"i:(\d*)")))
         return None
 
-    def parse2dict(self) -> dict:
+    def parse2dict(self, value: str) -> dict:
         return dict()
 
 
@@ -134,4 +134,4 @@ def test_extract_parent_data(value: str, expected: str):
     ],
 )
 def test_parse2dict(value: str, expected: dict):
-    assert PostValue().parse2dict() == expected
+    assert PostValue().parse2dict(value) == expected
