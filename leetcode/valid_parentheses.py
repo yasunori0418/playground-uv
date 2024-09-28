@@ -19,8 +19,26 @@ class Solution:
     """
 
     def isValid(self, s: str) -> bool:
-        pass
+        len_s = len(s)
+        pairs = {
+            "(": ")",
+            "[": "]",
+            "{": "}",
+        }
+        if len_s % 2 == 1:
+            return False
+        if len_s == 2:
+            return pairs[s[0]] == s[1]
+        while s:
+            close_index = s.find(pairs[s[0]])
+            if close_index == -1:
+                return False
+            if close_index < len_s:
+                s = s[0:close_index] + s[close_index+1:]
+                s = s[1:]
+        return True
 
+Solution().isValid("([)]")
 
 @pytest.mark.parametrize(
     [
@@ -29,9 +47,10 @@ class Solution:
     ],
     [
         pytest.param("()", True),
-        pytest.param("()[]{}", True),
         pytest.param("(]", False),
+        pytest.param("()[]{}", True),
         pytest.param("([])", True),
+        pytest.param("([)]", False),
     ],
 )
 def test_valid_parentheses(s: str, expected: bool):
