@@ -34,11 +34,32 @@ class Solution:
             if close_index == -1:
                 return False
             if close_index < len_s:
-                s = s[0:close_index] + s[close_index+1:]
+                s = s[0:close_index] + s[close_index + 1 :]
                 s = s[1:]
         return True
 
+
+class Solution2:
+    """答え見てきたやつ
+
+    順番を意識する必要がある場合は、stackに積めて、末尾の物と比較検証すると良いみたい
+    """
+
+    def isValid(self, s: str) -> bool:
+        stack = []
+        mapping = {")": "(", "}": "{", "]": "["}
+        for char in s:
+            if char in mapping.values():
+                stack.append(char)
+            elif char in mapping.keys():
+                if not stack or mapping[char] != stack.pop():
+                    return False
+
+        return not stack
+
+
 Solution().isValid("([)]")
+
 
 @pytest.mark.parametrize(
     [
