@@ -44,10 +44,17 @@ class Solution:
     マージされたリンク リストの先頭を返します。
     """
 
-    def mergeTwoLists(
-        self, list1: Optional[ListNode], list2: Optional[ListNode]
-    ) -> Optional[ListNode]:
-        pass
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        """kuuさん再帰の達人じゃん！！！"""
+        if not list1:
+            return list2
+        if not list2:
+            return list1
+        if list1.val < list2.val:
+            return ListNode(list1.val, self.mergeTwoLists(list1.next, list2))
+        else:
+            return ListNode(list2.val, self.mergeTwoLists(list1, list2.next))
+
 
 
 @pytest.mark.parametrize(
