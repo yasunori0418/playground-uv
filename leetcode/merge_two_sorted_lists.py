@@ -67,8 +67,8 @@ class Solution:
         pytest.param(
             gen_list_node([1, 2, 4]), gen_list_node([1, 3, 4]), [1, 1, 2, 3, 4, 4]
         ),
-        pytest.param(ListNode(None), ListNode(None), []),
-        pytest.param(ListNode(None), ListNode(), [0]),
+        pytest.param(None, None, []),
+        pytest.param(None, ListNode(), [0]),
     ],
 )
 def test_merge_two_lists(list1: ListNode, list2: ListNode, expected: List[int]):
