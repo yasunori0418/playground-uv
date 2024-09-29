@@ -9,5 +9,6 @@ dependencies = [
     "debugpy>=1.8.6",
     "deepdiff>=8.0.1",
     "pytest-clarity>=1.0.1",
+    "pytest-watch>=4.2.0",
     "pytest>=8.3.3",
 ]
