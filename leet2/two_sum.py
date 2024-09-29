@@ -31,3 +31,14 @@ class Solution:
             if nums[left] + nums[right] == target:
                 return [left, right]
             right -= 1
+
+    def two_sum_hash_map(self, nums: List[int], target: int) -> List[int]:
+        """hash mapを使うイカした答え
+        :refer: https://leetcode.com/problems/two-sum/solutions/5139921/video-hashmap-solution/
+        """
+        pair_idx = {}
+
+        for i, num in enumerate(nums):
+            if target - num in pair_idx:
+                return [i, pair_idx[target - num]]
+            pair_idx[num] = i

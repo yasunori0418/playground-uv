@@ -1,4 +1,5 @@
 import pytest
+from deepdiff import DeepDiff
 from .two_sum import Solution
 
 
@@ -15,3 +16,5 @@ from .two_sum import Solution
 )
 def test_two_sum(input, expected):
     assert Solution().twoSum(**input) == expected
+    assert Solution().two_sum_another(**input) == expected
+    assert not DeepDiff(Solution().two_sum_hash_map(**input), expected, ignore_order=True)
