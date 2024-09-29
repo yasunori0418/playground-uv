@@ -16,3 +16,18 @@ class Solution:
             for j in range(i + 1, len(nums)):
                 if nums[i] + nums[j] == target:
                     return [i, j]
+
+    def two_sum_another(self, nums: List[int], target: int) -> List[int]:
+        """
+        二分探索っぽいことしようとしたけど、ソートできないからパフォーマンスチューニングにならん…
+        """
+        left = 0
+        right = len(nums) - 1
+        while True:
+            if left == right:
+                left += 1
+                right = len(nums) - 1
+                continue
+            if nums[left] + nums[right] == target:
+                return [left, right]
+            right -= 1
