@@ -79,8 +79,7 @@ class PostValue:
         while data:
             _key = self._extract_data(data)
             data = data[data.find(";") + 1 :]
-            _value = self._extract_data(data)
-            result[_key] = _value
+            result[_key] = self._extract_data(data)
             data = data[data.find(";") + 1 :]
         return result
 
