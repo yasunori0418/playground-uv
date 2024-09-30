@@ -14,6 +14,7 @@ prefix:
 """
 
 import sys
+import json
 from typing import Literal, Optional, Tuple, Union, TypedDict
 import re
 
@@ -134,4 +135,4 @@ class PostValue:
 
 
 if __name__ == "__main__":
-    print(PostValue().main(sys.argv[1]))
+    print(json.dumps(PostValue().main(sys.argv[1])))
