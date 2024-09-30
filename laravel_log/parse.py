@@ -13,6 +13,7 @@ prefix:
   i: 整数
 """
 
+import sys
 from typing import Literal, Optional, Tuple, Union, TypedDict
 import re
 
@@ -126,3 +127,11 @@ class PostValue:
                 result.insert(_index, self._extract_data(data))
             data = data[data.find(";") + 1 :]
         return result
+    
+    def main(self, data) -> dict:
+        parent_data = self._extract_parent_data(data)
+        return self._str_to_dict(parent_data["data"])
+
+
+if __name__ == "__main__":
+    print(PostValue().main(sys.argv[1]))
