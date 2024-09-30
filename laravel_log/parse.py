@@ -92,7 +92,12 @@ class PostValue:
                     result[_key] = self._str_to_dict(parent_in_data)
                 elif self._prefix_checker(parent_in_data) == "Integer":
                     result[_key] = self._str_to_list(parent_in_data)
-                data = data[: parent_index[0]] + data[parent_index[1] :]
+                data = (
+                    data[: parent_index[0]]
+                    + data[parent_index[1]]
+                    + ";"
+                    + data[parent_index[1] + 1 :]
+                )
             else:
                 result[_key] = self._extract_data(data)
             data = data[data.find(";") + 1 :]
@@ -111,7 +116,12 @@ class PostValue:
                     result.insert(_index, self._str_to_dict(parent_in_data))
                 elif self._prefix_checker(parent_in_data) == "Integer":
                     result.insert(_index, self._str_to_list(parent_in_data))
-                data = data[: parent_index[0]] + data[parent_index[1] :]
+                data = (
+                    data[: parent_index[0]]
+                    + data[parent_index[1]]
+                    + ";"
+                    + data[parent_index[1] + 1 :]
+                )
             else:
                 result.insert(_index, self._extract_data(data))
             data = data[data.find(";") + 1 :]
