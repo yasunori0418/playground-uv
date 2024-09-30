@@ -26,6 +26,7 @@ import pytest
     [
         pytest.param('i:0;s:5:"item1";i:1;"item2";i:2;"item3"', 0),
         pytest.param('s:3:"key";s:5:"value";', "key"),
+        pytest.param('s:11:"key_in_dict";s:13:"value_in_dict";', "key_in_dict"),
         pytest.param('n:3:"key";s:5:"value";', None),
     ],
 )

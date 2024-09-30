@@ -21,6 +21,7 @@ class ParentData(TypedDict):
     index: Tuple[int, int]
     data: str
 
+
 class PostValue:
     PREFIX_TYPES = Literal["Array", "String", "Integer"]
 
@@ -73,7 +74,7 @@ class PostValue:
 
         prefix = self._prefix_checker(data)
         if prefix == "String":
-            return __match_data(data, re.compile(r'^s:\d:"(.*?)"'))
+            return __match_data(data, re.compile(r'^s:\d*?:"(.*?)"'))
         elif prefix == "Integer":
             return int(__match_data(data, re.compile(r"i:(\d*)")))
         return None
