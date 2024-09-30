@@ -55,8 +55,24 @@ class PostValue:
             return int(__match_data(data, re.compile(r"i:(\d*)")))
         return None
 
-    def parse2dict(self, value: str) -> dict:
-        return dict()
+    def _str_to_dict(self, data: str) -> Optional[dict]:
+        result = {}
+        while data:
+            _key = self._extract_data(data)
+            data = data[data.find(";") + 1 :]
+            _value = self._extract_data(data)
+            result[_key] = _value
+            data = data[data.find(";") + 1 :]
+        return result
+
+    def _str_to_list(self, data: str) -> Optional[list]:
+        result = []
+        while data:
+            _index = int(self._extract_data(data))
+            data = data[data.find(";") + 1 :]
+            result.insert(_index, self._extract_data(data))
+            data = data[data.find(";") + 1 :]
+        return result
 
 
 @pytest.mark.parametrize(
@@ -111,6 +127,25 @@ def test_prefix_checker(value: str, expected: str):
 )
 def test_extract_parent_data(value: str, expected: str):
     assert PostValue()._extract_parent_data(value) == expected
+
+
+def test_str_to_list():
+    assert PostValue()._str_to_list(
+        'i:0;s:5:"item1";i:1;s:5:"item2";i:2;s:5:"item3";'
+    ) == ["item1", "item2", "item3"]
+    assert PostValue()._str_to_list("") == []
+
+
+def test_str_to_dict():
+    assert PostValue()._str_to_dict('s:3:"key";s:5:"value";') == {"key": "value"}
+    assert PostValue()._str_to_dict(
+        's:3:"key";s:5:"value";s:4:"key2";s:6:"value2";'
+    ) == {"key": "value", "key2": "value2"}
+    assert PostValue()._str_to_dict('s:3:"key";s:5:"value";s:4:"key2";i:5;') == {
+        "key": "value",
+        "key2": 5,
+    }
+    assert PostValue()._str_to_dict("") == {}
 
 
 @pytest.mark.skip(reason="未実装")
