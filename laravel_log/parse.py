@@ -13,14 +13,18 @@ prefix:
   i: 整数
 """
 
-from typing import Dict, Literal, Optional, Tuple, Union
+from typing import Literal, Optional, Tuple, Union, TypedDict
 import re
 
+
+class ParentData(TypedDict):
+    index: Tuple[int, int]
+    data: str
 
 class PostValue:
     PREFIX_TYPES = Literal["Array", "String", "Integer"]
 
-    def _extract_parent_data(self, data: str) -> Dict[str, Union[Tuple[int, int], str]]:
+    def _extract_parent_data(self, data: str) -> ParentData:
         """dataから括弧の中の文字列を抽出する
 
         再帰的な括弧の文字列抽出ではなく、浅いデータ抽出
