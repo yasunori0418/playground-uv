@@ -26,8 +26,25 @@ class PostValue:
         再帰的な括弧の文字列抽出ではなく、浅いデータ抽出
         :param: data str
         """
-        open_parent_index = data.find("{") + 1
-        close_parent_index = data.rfind("}")
+        parent_cnt = 0
+        open_parent_index = 0
+        close_parent_index = 0
+        for i, s in enumerate(data):
+            if s not in ["{", "}"]:
+                continue
+            if parent_cnt == 0 and s == "{":
+                open_parent_index = i + 1
+                parent_cnt += 1
+                continue
+            if parent_cnt == 1 and s == "}":
+                close_parent_index = i
+                parent_cnt -= 1
+                break
+
+            if s == "{":
+                parent_cnt += 1
+            if s == "}":
+                parent_cnt -= 1
         return {
             "index": (open_parent_index, close_parent_index),
             "data": data[open_parent_index:close_parent_index],
