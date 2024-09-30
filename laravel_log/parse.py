@@ -103,6 +103,16 @@ class PostValue:
         while data:
             _index = int(self._extract_data(data))
             data = data[data.find(";") + 1 :]
-            result.insert(_index, self._extract_data(data))
+            if self._prefix_checker(data) == "Array":
+                parent_data = self._extract_parent_data(data)
+                parent_in_data = parent_data["data"]
+                parent_index = parent_data["index"]
+                if self._prefix_checker(parent_in_data) == "String":
+                    result.insert(_index, self._str_to_dict(parent_in_data))
+                elif self._prefix_checker(parent_in_data) == "Integer":
+                    result.insert(_index, self._str_to_list(parent_in_data))
+                data = data[: parent_index[0]] + data[parent_index[1] :]
+            else:
+                result.insert(_index, self._extract_data(data))
             data = data[data.find(";") + 1 :]
         return result

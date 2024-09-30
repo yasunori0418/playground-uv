@@ -80,6 +80,12 @@ def test_str_to_list():
     assert PostValue()._str_to_list(
         'i:0;s:5:"item1";i:1;s:5:"item2";i:2;s:5:"item3";'
     ) == ["item1", "item2", "item3"]
+    assert PostValue()._str_to_list(
+        'i:0;s:5:"item1";i:1;a:1:{s:3:"key";s:5:"value";};i:2;s:5:"item3";'
+    ) == ["item1", {"key": "value"}, "item3"]
+    assert PostValue()._str_to_list(
+        'i:0;s:5:"item1";i:1;a:3:{i:0;s:5:"item1";i:1;s:5:"item2";i:2;s:5:"item3";};i:2;s:5:"item3";'
+    ) == ["item1", ["item1", "item2", "item3"], "item3"]
     assert PostValue()._str_to_list("") == []
 
 
