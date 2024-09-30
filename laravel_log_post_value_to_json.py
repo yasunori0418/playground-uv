@@ -13,7 +13,7 @@ prefix:
   i: 整数
 """
 
-from typing import Any, Literal, Optional, Union
+from typing import Any, Dict, Literal, Optional, Tuple, Union
 import re
 import pytest
 
@@ -21,7 +21,7 @@ import pytest
 class PostValue:
     PREFIX_TYPES = Literal["Array", "String", "Integer"]
 
-    def _extract_parent_data(self, data: str) -> str:
+    def _extract_parent_data(self, data: str) -> Dict[str, Union[Tuple[int, int], str]]:
         """dataから括弧の中の文字列を抽出する
 
         再帰的な括弧の文字列抽出ではなく、浅いデータ抽出
@@ -29,7 +29,10 @@ class PostValue:
         """
         open_parent_index = data.find("{") + 1
         close_parent_index = data.rfind("}")
-        return data[open_parent_index:close_parent_index]
+        return {
+            "index": (open_parent_index, close_parent_index),
+            "data": data[open_parent_index:close_parent_index],
+        }
 
     def _prefix_checker(self, data: str) -> Optional[PREFIX_TYPES]:
         """dataの先頭文字列を識別"""
@@ -117,11 +120,14 @@ def test_prefix_checker(value: str, expected: str):
     [
         pytest.param(
             'a:2:{s:3:"key";s:5:"value";s:13:"arrayInString";a:3:{i:0;s:5:"item1";i:1;"item2";i:2;"item3"}}',
-            's:3:"key";s:5:"value";s:13:"arrayInString";a:3:{i:0;s:5:"item1";i:1;"item2";i:2;"item3"}',
+            {
+                "index": (5, 93),
+                "data": 's:3:"key";s:5:"value";s:13:"arrayInString";a:3:{i:0;s:5:"item1";i:1;"item2";i:2;"item3"}',
+            },
         ),
         pytest.param(
             'a:3:{i:0;s:5:"item1";i:1;"item2";i:2;"item3"}',
-            'i:0;s:5:"item1";i:1;"item2";i:2;"item3"',
+            {"index": (5, 44), "data": 'i:0;s:5:"item1";i:1;"item2";i:2;"item3"'},
         ),
     ],
 )
