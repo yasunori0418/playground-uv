@@ -73,7 +73,31 @@ class Solution:
         )
         return result_node
 
+class Solution2:
+    def addTwoNumbers(
+        self, 
+        l1: Optional[ListNode],
+        l2: Optional[ListNode],
+        carry=0
+    ) -> Optional[ListNode]:
+        if not l1 and not l2 and carry == 0:
+            return None
 
+        first_num = l1.val if l1 else 0
+        second_num = l2.val if l2 else 0
+        summation = first_num + second_num + carry
+
+        new_num = summation % 10
+        new_carry = summation // 10
+
+        new_node = ListNode(new_num)
+        new_node.next = self.addTwoNumbers(
+            l1.next if l1 else None,
+            l2.next if l2 else None,
+            new_carry
+        )
+
+        return new_node
 # Input: l1 = [2,4,3], l2 = [5,6,4]
 # Output: [7,0,8]
 # Explanation: 342 + 465 = 807.
