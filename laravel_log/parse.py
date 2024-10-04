@@ -28,7 +28,7 @@ class ParentData(TypedDict):
 
 
 class PostValue:
-    PREFIX_TYPES = Literal["Array", "String", "Integer", "Boolean"]
+    PREFIX_TYPES = Literal["Array", "String", "Integer", "Boolean", "Null"]
 
     def _extract_parent_data(self, data: str) -> ParentData:
         """dataから括弧の中の文字列を抽出する
@@ -73,17 +73,19 @@ class PostValue:
         else:
             return None
 
-    def _extract_data(self, data: str) -> Union[str, int, None]:
+    def _extract_data(self, data: str) -> Union[str, int, bool, None]:
         def __match_data(data: str, pattern: re.Pattern):
             match = pattern.match(data)
             if match:
-                return match.group(1)
+                return str(match.group(1))
 
         prefix = self._prefix_checker(data)
         if prefix == "String":
             return __match_data(data, re.compile(r'^s:\d*?:"(.*?)"'))
         elif prefix == "Integer":
             return int(__match_data(data, re.compile(r"i:(\d*)")))
+        elif prefix == "Boolean":
+            return bool(int(__match_data(data, re.compile(r"b:(\d*)"))))
         return None
 
     def _str_to_dict(self, data: str) -> Optional[dict]:

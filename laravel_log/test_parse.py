@@ -28,6 +28,8 @@ import pytest
         pytest.param('s:3:"key";s:5:"value";', "key"),
         pytest.param('s:11:"key_in_dict";s:13:"value_in_dict";', "key_in_dict"),
         pytest.param('x:3:"key";s:5:"value";', None),
+        pytest.param('b:0;s:5:"item1";i:1;"item2";i:2;"item3"', False),
+        pytest.param('b:1;s:5:"item1";i:1;"item2";i:2;"item3"', True),
     ],
 )
 def test_extract_data(value: str, expected: Any):
