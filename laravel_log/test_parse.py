@@ -1,18 +1,3 @@
-"""
-laravelのproduction.ERRORで掃き出される`@@postValues:`が人が読むにはしんどい文法のデータなので、これをjsonに変換する
-`a:1:{i:0;s:4:"item"}` -> 配列
-`a:1:{s:3:"key";s:5:"value";}` -> 連想配列
-`s:4:"hoge"` -> 文字列
-`i:0` -> 整数
-
-`prefix:{データの長さ}:データ`というデータの連続
-整数の場合は`i:{データ}`というデータ構造
-prefix:
-  a: 配列
-  s: 文字列
-  i: 整数
-"""
-
 from .parse import PostValue
 from typing import Any
 import pytest
@@ -28,6 +13,7 @@ import pytest
         pytest.param('s:3:"key";s:5:"value";', "key"),
         pytest.param('s:11:"key_in_dict";s:13:"value_in_dict";', "key_in_dict"),
         pytest.param('x:3:"key";s:5:"value";', None),
+        pytest.param('N;s:5:"value";', None),
         pytest.param('b:0;s:5:"item1";i:1;"item2";i:2;"item3"', False),
         pytest.param('b:1;s:5:"item1";i:1;"item2";i:2;"item3"', True),
     ],
@@ -50,7 +36,8 @@ def test_extract_data(value: str, expected: Any):
         pytest.param('s:3:"key";s:5:"value";', "String"),
         pytest.param('b:0:"key";s:5:"value";', "Boolean"),
         pytest.param('b:1:"key";s:5:"value";', "Boolean"),
-        pytest.param('n:3:"key";s:5:"value";', None),
+        pytest.param('x:3:"key";s:5:"value";', None),
+        pytest.param('N;s:5:"value";', "Null"),
     ],
 )
 def test_prefix_checker(value: str, expected: str):
@@ -96,6 +83,10 @@ def test_extract_parent_data(value: str, expected: str):
             ["item1", False, "item3"],
         ),
         pytest.param(
+            'i:0;s:5:"item1";i:1;N;i:2;s:5:"item3";',
+            ["item1", None, "item3"],
+        ),
+        pytest.param(
             'i:0;s:5:"item1";i:1;a:1:{s:3:"key";s:5:"value";}i:2;s:5:"item3";',
             ["item1", {"key": "value"}, "item3"],
         ),
@@ -116,6 +107,7 @@ def test_str_to_list(input, expected):
         pytest.param('s:3:"key";s:5:"value";', {"key": "value"}),
         pytest.param('s:3:"key";b:1;', {"key": True}),
         pytest.param('s:3:"key";b:0;', {"key": False}),
+        pytest.param('s:3:"key";N;', {"key": None}),
         pytest.param("", {}),
         pytest.param(
             's:3:"key";s:5:"value";s:4:"key2";s:6:"value2";',

@@ -14,6 +14,7 @@ prefix:
   b: 真偽値
     b:1 => True
     b:0 => False
+  N; Null
 """
 
 import sys
@@ -70,6 +71,8 @@ class PostValue:
             return "Integer"
         elif data[0] == "b":
             return "Boolean"
+        elif data[0] == "N":
+            return "Null"
         else:
             return None
 
@@ -86,6 +89,8 @@ class PostValue:
             return int(__match_data(data, re.compile(r"i:(\d*)")))
         elif prefix == "Boolean":
             return bool(int(__match_data(data, re.compile(r"b:(\d*)"))))
+        elif prefix == "Null":
+            return None
         return None
 
     def _str_to_dict(self, data: str) -> Optional[dict]:
