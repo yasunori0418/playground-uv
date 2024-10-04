@@ -88,6 +88,14 @@ def test_extract_parent_data(value: str, expected: str):
             ["item1", "item2", "item3"],
         ),
         pytest.param(
+            'i:0;s:5:"item1";i:1;b:1;i:2;s:5:"item3";',
+            ["item1", True, "item3"],
+        ),
+        pytest.param(
+            'i:0;s:5:"item1";i:1;b:0;i:2;s:5:"item3";',
+            ["item1", False, "item3"],
+        ),
+        pytest.param(
             'i:0;s:5:"item1";i:1;a:1:{s:3:"key";s:5:"value";}i:2;s:5:"item3";',
             ["item1", {"key": "value"}, "item3"],
         ),
@@ -106,6 +114,8 @@ def test_str_to_list(input, expected):
     ["input", "expected"],
     [
         pytest.param('s:3:"key";s:5:"value";', {"key": "value"}),
+        pytest.param('s:3:"key";b:1;', {"key": True}),
+        pytest.param('s:3:"key";b:0;', {"key": False}),
         pytest.param("", {}),
         pytest.param(
             's:3:"key";s:5:"value";s:4:"key2";s:6:"value2";',
