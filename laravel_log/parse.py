@@ -11,6 +11,9 @@ prefix:
   a: 配列
   s: 文字列
   i: 整数
+  b: 真偽値
+    b:1 => True
+    b:0 => False
 """
 
 import sys
@@ -25,7 +28,7 @@ class ParentData(TypedDict):
 
 
 class PostValue:
-    PREFIX_TYPES = Literal["Array", "String", "Integer"]
+    PREFIX_TYPES = Literal["Array", "String", "Integer", "Boolean"]
 
     def _extract_parent_data(self, data: str) -> ParentData:
         """dataから括弧の中の文字列を抽出する
@@ -65,6 +68,8 @@ class PostValue:
             return "String"
         elif data[0] == "i":
             return "Integer"
+        elif data[0] == "b":
+            return "Boolean"
         else:
             return None
 

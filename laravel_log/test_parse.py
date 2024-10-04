@@ -46,6 +46,8 @@ def test_extract_data(value: str, expected: Any):
         ),
         pytest.param('i:0;s:5:"item1";i:1;"item2";i:2;"item3"', "Integer"),
         pytest.param('s:3:"key";s:5:"value";', "String"),
+        pytest.param('b:0:"key";s:5:"value";', "Boolean"),
+        pytest.param('b:1:"key";s:5:"value";', "Boolean"),
         pytest.param('n:3:"key";s:5:"value";', None),
     ],
 )
