@@ -15,7 +15,27 @@ m x n のバイナリ行列グリッドが与えられます。
 
 
 def solve(grid: list[list[int]]) -> int:
-    return 6
+    max_size = 0
+    rows = len(grid)
+    cols = len(grid[0])
+
+    def dfs(r, c, size=0) -> int:
+        # 各グリッド内を探索していき、範囲から出たり、探索対象ではなくなったら終了する
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] == 0:
+            return size
+        grid[r][c] = 0
+        size += 1
+        size = dfs(r + 1, c, size)
+        size = dfs(r - 1, c, size)
+        size = dfs(r, c + 1, size)
+        size = dfs(r, c - 1, size)
+        return size
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 1:
+                max_size = max(max_size, dfs(r, c))
+    return max_size
 
 
 assert (
@@ -33,3 +53,6 @@ assert (
     )
     == 6
 )
+
+assert solve([[0, 0, 0, 0, 0, 0, 0, 0]]) == 0
+
