@@ -10,7 +10,29 @@ An island is surrounded by water and is formed by connecting adjacent lands hori
 
 
 def solve(grid: list[list[str]]) -> int:
-    return 1
+    result = 0
+    rows = len(grid)
+    cols = len(grid[0])
+
+    def dfs(r, c):
+        # 各グリッド内を探索していき、範囲から出たり、探索対象ではなくなったら終了する
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] == "0":
+            return
+        grid[r][c] = "0"
+        dfs(r + 1, c)
+        dfs(r - 1, c)
+        dfs(r, c + 1)
+        dfs(r, c - 1)
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == "1":
+                # 2重ループ内に再帰関数だからめちゃくちゃ計算量が大きくなると思ったけど、
+                # ChatGPTに聞いてみたらこれはO(r * c)分で済むらしい
+                # dfs関数自体が探索対象を潰していくから、らしい
+                dfs(r, c)
+                result += 1
+    return result
 
 
 def test_solve():
@@ -26,3 +48,26 @@ def test_solve():
         == 1
     )
 
+    assert (
+        solve(
+            [
+                ["1", "1", "0", "1", "0"],
+                ["1", "1", "0", "1", "1"],
+                ["1", "1", "0", "0", "1"],
+                ["0", "0", "0", "0", "0"],
+            ]
+        )
+        == 2
+    )
+
+    assert (
+        solve(
+            [
+                ["1", "1", "0", "1", "0"],
+                ["1", "1", "0", "1", "0"],
+                ["1", "1", "0", "0", "1"],
+                ["0", "0", "0", "1", "1"],
+            ]
+        )
+        == 3
+    )
