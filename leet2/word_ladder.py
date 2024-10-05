@@ -13,11 +13,32 @@ Given two words, beginWord and endWord, and a dictionary wordList, return the nu
 sk == endWord
 beginWord と endWord の 2 つの単語と辞書の wordList を指定すると、beginWord から endWord までの最短の変換シーケンス内の単語の数を返します。そのようなシーケンスが存在しない場合は 0 を返します。
 """
+
 from collections import deque
 
 
-def solve(beginWord: str, endWord: str, wordList: list[str]) -> int:
-    return 5
+def solve(begin_word: str, end_word: str, word_list: list[str]) -> int:
+    word_set = set(word_list)
+    if end_word not in word_set:
+        return 0
+    word_queue = deque()
+    word_queue.append((begin_word, 1))
+    visited = set()
+    visited.add(begin_word)
+    while word_queue:
+        current_word, step = word_queue.popleft()
+        if current_word == end_word:
+            return step
+        for i in range(len(current_word)):
+            for j in "abcdefghijklmnopqrstuvwxyz":
+                if j == current_word[i]:
+                    continue
+                new_word = current_word[:i] + j + current_word[i + 1 :]
+                if new_word in word_set and new_word not in visited:
+                    visited.add(new_word)
+                    word_queue.append((new_word, step + 1))
+
+    return 0
 
 
 assert solve("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]) == 5
