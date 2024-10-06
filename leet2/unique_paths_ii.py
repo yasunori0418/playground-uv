@@ -17,7 +17,45 @@ m x n の整数配列グリッドが与えられます。
 テストケースは、答えが 2 * 109 以下になるように生成されます。
 """
 
-def solve(grid: list[list[int]]) -> int:
-    return 2
 
-assert solve([[0,0,0],[0,1,0],[0,0,0]]) == 2
+def solve(grid: list[list[int]]) -> int:
+    # DPテーブルの初期化
+    if not grid or not grid[0]:
+        return 0
+
+    m = len(grid)
+    n = len(grid[0])
+
+    # DPテーブルの初期化
+    dp = [[0] * n for _ in range(m)]
+
+    # スタート地点の初期化
+    dp[0][0] = 1 if grid[0][0] == 0 else 0
+
+    # 最初の行の初期化
+    for j in range(1, n):
+        if grid[0][j] == 0 and dp[0][j - 1] == 1:
+            dp[0][j] = 1
+        else:
+            dp[0][j] = 0
+
+    # 最初の列の初期化
+    for i in range(1, m):
+        if grid[i][0] == 0 and dp[i - 1][0] == 1:
+            dp[i][0] = 1
+        else:
+            dp[i][0] = 0
+
+    # DPテーブルの更新
+    for i in range(1, m):
+        for j in range(1, n):
+            if grid[i][j] == 0:
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+            else:
+                dp[i][j] = 0
+
+    return dp[m - 1][n - 1]
+
+
+assert solve([[0, 0, 0], [0, 1, 0], [0, 0, 0]]) == 2
+assert solve([[0, 1], [0, 0]]) == 1
